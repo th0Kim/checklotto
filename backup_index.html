@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lotto Numbers</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      input {
+        all: unset;
+      }
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* For Firefox */
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+      .input-container {
+        margin-bottom: 20px;
+      }
+      .input-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .input-group input {
+        width: 100%;
+        padding: 10px;
+        font-size: 1em;
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .input-group button {
+        flex-shrink: 0;
+        margin-left: 10px;
+        padding: 10px 20px;
+        font-size: 1em;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+      }
+      .input-group button:hover {
+        background-color: #0056b3;
+      }
+      .lotto-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .lotto-number {
+        font-size: 2em;
+        margin: 10px;
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        border-radius: 50%;
+        background-color: #ffcc00;
+        color: #fff;
+      }
+      .lotto-number.red {
+        background-color: #ff0000;
+      }
+      #original-container .lotto-number {
+        background-color: #574c20;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="input-container">
+      <div class="input-group">
+        <input
+          type="number"
+          id="lotto-input"
+          min="1"
+          max="45"
+          placeholder="Enter a number"
+        />
+        <button onclick="addLottoNumber()">숫자 추가하기</button>
+        <button onclick="compareLottoNumber()">회차 검색하기</button>
+      </div>
+      <div id="result-container" class="lotto-container">
+        <div class="lotto-number">10</div>
+        <div class="lotto-number">22</div>
+        <div class="lotto-number">0</div>
+        <div class="lotto-number">42</div>
+        <div class="lotto-number">52</div>
+        <div class="lotto-number">8</div>
+        <div class="lotto-number">11</div>
+      </div>
+    </div>
+    <div id="original-container" class="lotto-container"></div>
+    <p>중복 입력한 숫자가 있는 경우 정상적인 조회가 되지 않습니다.</p>
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      setLottoNumber();
+    });
+    // 최신 로또 번호 불러오기
+    function setLottoNumber() {
+      fetch(
+        `https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=1154`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          const originalContainer =
+            document.getElementById("original-container");
+          const numbers = [
+            data.drwtNo1,
+            data.drwtNo2,
+            data.drwtNo3,
+            data.drwtNo4,
+            data.drwtNo5,
+            data.drwtNo6,
+            data.bnusNo,
+          ];
+          numbers.forEach((num) => {
+            const newNumber = document.createElement("div");
+            newNumber.className = "lotto-number";
+            newNumber.textContent = num;
+            originalContainer.appendChild(newNumber);
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching lotto numbers:", error);
+        });
+    }
+
+    // 로또 번호 추가하기
+    function addLottoNumber() {
+      const input = document.getElementById("lotto-input");
+      const number = input.value;
+      const resultContainer = document.getElementById("result-container");
+      const newNumber = document.createElement("div");
+      newNumber.className = "lotto-number";
+      newNumber.textContent = number;
+      if (number >= 1 && number <= 45 && resultContainer.children.length < 7) {
+        resultContainer.appendChild(newNumber);
+        input.value = "";
+      } else {
+        alert(
+          "숫자는 1부터 45까지만 입력 가능하며, 7개까지만 입력 가능합니다."
+        );
+      }
+    }
+
+    // 최신 회차와 내 로또 번호 비교하기
+    function compareLottoNumber() {
+      const getNumbers = document.getElementById("result-container").children;
+      const getOriginalNumbers =
+        document.getElementById("original-container").children;
+      const myNumbers = Array.from(getNumbers).map(
+        (number) => number.textContent
+      );
+      const originalNumbers = Array.from(getOriginalNumbers).map(
+        (number) => number.textContent
+      );
+      const result = myNumbers.filter((number) =>
+        originalNumbers.includes(number)
+      );
+      if (result.length > 0) {
+        result.forEach((number) => {
+          Array.from(getNumbers).forEach((element) => {
+            if (element.textContent === number) {
+              element.classList.add("red");
+            }
+          });
+        });
+      } else {
+        const resultText = document.createElement("p");
+        resultText.id = "result-text";
+        resultText.textContent = "아쉽지만 당첨되지 않았습니다.";
+        document.querySelector(".input-container").appendChild(resultText);
+      }
+    }
+  </script>
+</html>

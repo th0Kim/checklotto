@@ -1,0 +1,165 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로또</title>
+    <link rel="stylesheet" href="/public/css/index.css" />
+    <script src="http://localhost:35729/livereload.js"></script>
+  </head>
+  <body>
+    <div class="input-container">
+      <h2 class="round-title">
+        회차 번호: <span id="round-number">비교할 회차를 검색하세요</span>
+      </h2>
+      <div class="input-group">
+        <input
+          type="number"
+          id="round-input"
+          min="1"
+          max="50000"
+          placeholder="Enter a round number"
+        />
+        <button onclick="addRoundNumber()">회차 검색하기</button>
+      </div>
+      <div id="original-container" class="lotto-container">
+        <span class="lotto-nodata-box">조회된 로또 번호가 없습니다.</span>
+      </div>
+    </div>
+
+    <div class="input-container">
+      <label class="round-title" for="lotto-input">내 로또 번호</label>
+      <div class="input-group">
+        <input
+          type="number"
+          id="lotto-input"
+          min="1"
+          max="45"
+          placeholder="Enter a number"
+        />
+        <button onclick="addLottoNumber()">숫자 추가하기</button>
+      </div>
+
+      <div id="result-container" class="lotto-container">
+        <span class="lotto-nodata-box">내 로또 번호가 없습니다.</span>
+      </div>
+      <p>• 중복 입력한 숫자가 있는 경우 정상적인 조회가 되지 않습니다.</p>
+
+      <div class="input-bottom">
+        <button onclick="compareLottoNumber()">회차 비교하기</button>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    // 최신 로또 번호 불러오기
+    function setLottoNumber(number) {
+      const originalContainer = document.getElementById("original-container");
+      originalContainer.innerHTML = "";
+      console.log(number);
+      fetch(`/api/lotto/${number}`)
+        .then((response) => response.json())
+        .then((data) => {
+          const numbers = [
+            data.drwtNo1,
+            data.drwtNo2,
+            data.drwtNo3,
+            data.drwtNo4,
+            data.drwtNo5,
+            data.drwtNo6,
+            data.bnusNo,
+          ];
+
+          numbers.forEach((num) => {
+            const newNumber = document.createElement("div");
+            newNumber.className = "lotto-number";
+            newNumber.textContent = num;
+            originalContainer.appendChild(newNumber);
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching lotto numbers:", error);
+        });
+    }
+
+    // 로또 번호 추가하기
+    function addLottoNumber() {
+      const input = document.getElementById("lotto-input");
+      const number = input.value;
+      const resultContainer = document.getElementById("result-container");
+      const lottoNodataBox = resultContainer.querySelector(".lotto-nodata-box");
+      const newNumber = document.createElement("div");
+      newNumber.className = "lotto-number";
+      newNumber.textContent = number;
+
+      if (lottoNodataBox) {
+        lottoNodataBox.remove();
+      }
+
+      if (number >= 1 && number <= 45 && resultContainer.children.length < 7) {
+        resultContainer.appendChild(newNumber);
+        input.value = "";
+      } else {
+        alert(
+          "숫자는 1부터 45까지만 입력 가능하며, 7개까지만 입력 가능합니다."
+        );
+      }
+    }
+
+    // 최신 회차와 추가하기
+    function addRoundNumber() {
+      const input = document.getElementById("round-input");
+      const roundNumber = input.value;
+      const resultContainer = document.getElementById("round-number");
+      const lottoNodataBox = resultContainer.querySelector(".lotto-nodata-box");
+
+      if (lottoNodataBox) {
+        lottoNodataBox.remove();
+      }
+      resultContainer.textContent = roundNumber;
+      setLottoNumber(roundNumber);
+      input.value = "";
+    }
+
+    // 최신 회차와 내 로또 번호 비교하기
+    function compareLottoNumber() {
+      const getNumbers = document.getElementById("result-container").children;
+      const getOriginalNumbers =
+        document.getElementById("original-container").children;
+      const myNumbers = Array.from(getNumbers).map(
+        (number) => number.textContent
+      );
+      const originalNumbers = Array.from(getOriginalNumbers).map(
+        (number) => number.textContent
+      );
+
+      // Remove red class from all numbers
+      Array.from(getNumbers).forEach((element) => {
+        element.classList.remove("red");
+      });
+
+      const result = myNumbers.filter((number) =>
+        originalNumbers.includes(number)
+      );
+      if (result.length > 0) {
+        result.forEach((number) => {
+          Array.from(getNumbers).forEach((element) => {
+            if (element.textContent === number) {
+              element.classList.add("red");
+            }
+          });
+        });
+      } else {
+        const existingResultText = document.getElementById("result-text");
+        if (existingResultText) {
+          existingResultText.remove();
+        }
+        const resultText = document.createElement("p");
+        resultText.id = "result-text";
+        resultText.textContent = "아쉽지만 당첨되지 않았습니다.";
+        document.querySelector(".input-container").appendChild(resultText);
+      }
+    }
+  </script>
+</html>
