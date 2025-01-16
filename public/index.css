@@ -20,6 +20,12 @@ main {
   box-sizing: border-box;
 }
 
+footer {
+  font-size: 1.2em;
+  color: #888888;
+  text-align: center;
+}
+
 input {
   flex: 1;
   padding: 1em;
