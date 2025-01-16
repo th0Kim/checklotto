@@ -1,48 +1,26 @@
 /* public/index.scss */
 body {
+  font-size: 10px;
   font-family: Arial, sans-serif;
   height: 100vh;
   margin: 0;
+  padding: 4em 0;
   background-color: #f0f0f0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-}
-
-.lotto-input {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.lotto-input input {
-  width: 200px;
-  padding: 10px;
-  font-size: 1em;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-.lotto-input button {
-  padding: 10px 20px;
-  font-size: 1em;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
-  cursor: pointer;
-}
-.lotto-input button:hover {
-  background-color: #0056b3;
+  box-sizing: border-box;
 }
 
 input {
-  padding: 10px;
-  font-size: 1em;
+  flex: 1;
+  padding: 1em;
+  font-size: 1.2em;
   border: 1px solid #ccc;
-  border-radius: 5px;
   background-color: #ffffff;
+  border-radius: 5px;
+  margin-bottom: 1em;
   all: unset;
 }
 input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
@@ -51,6 +29,25 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 }
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+button {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 0.5em;
+  color: #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.lotto-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.3rem;
 }
 
 .input-container {
@@ -64,30 +61,25 @@ input[type=number] {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 1em;
 }
-
 .input-group input {
   width: 100%;
-  padding: 10px;
-  font-size: 1em;
+  height: 3em;
+  padding: 0 1em;
+  font-size: 1.3em;
   background-color: #ffffff;
   border: 1px solid #ccc;
   border-radius: 5px;
+  box-sizing: border-box;
 }
-
 .input-group button {
-  flex-shrink: 0;
-  margin-left: 10px;
-  padding: 10px 20px;
-  font-size: 1em;
-  border: none;
-  border-radius: 5px;
+  height: 3em;
+  margin-left: 0.5em;
+  padding: 0 3em;
+  font-size: 1.3em;
   background-color: #007bff;
-  color: #fff;
-  cursor: pointer;
 }
-
 .input-group button:hover {
   background-color: #0056b3;
 }
@@ -97,25 +89,25 @@ input[type=number] {
   justify-content: center;
   align-items: center;
   background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 2em;
+  border-radius: 1em;
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.1);
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 2em;
 }
 
 .lotto-number {
-  font-size: 2em;
-  margin: 10px;
+  flex-shrink: 0;
+  font-size: 1em;
+  margin: 0.2em;
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
   border-radius: 50%;
   background-color: #ffcc00;
   color: #fff;
 }
-
 .lotto-number.red {
   background-color: #ff0000;
 }
@@ -127,7 +119,7 @@ input[type=number] {
 .round-title {
   display: block;
   margin: 0;
-  margin-bottom: 20px;
+  margin-bottom: 1em;
   font-size: 1.5em;
   font-weight: bold;
   color: #333;
@@ -138,19 +130,28 @@ input[type=number] {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 4em;
 }
 .input-bottom button {
-  padding: 12px 24px;
-  font-size: 1.2em;
+  height: 3em;
+  padding: 0 3em;
+  font-size: 1.5em;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5em;
   background-color: #28a745;
-  color: #fff;
-  cursor: pointer;
 }
 .input-bottom button:hover {
   background-color: #218838;
+}
+
+.lotto-nodata-box {
+  font-size: 1.2em;
+  color: #555555;
+}
+
+.noice-text-box {
+  font-size: 1.2em;
+  color: #555555;
 }
 
 /*# sourceMappingURL=index.css.map */
