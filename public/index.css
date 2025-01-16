@@ -149,9 +149,14 @@ button {
   color: #555555;
 }
 
+.result-text-box,
 .noice-text-box {
   font-size: 1.2em;
   color: #555555;
+}
+.result-text-box.red,
+.noice-text-box.red {
+  color: #ff0000;
 }
 
 /*# sourceMappingURL=index.css.map */

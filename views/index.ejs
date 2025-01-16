@@ -118,7 +118,7 @@
           });
 
           // 당첨 결과 문구 삭제
-          const existingResultText = document.getElementById("result-text");
+          const existingResultText = document.querySelector("result-text-box");
           if (existingResultText) {
             existingResultText.remove();
           }
@@ -134,12 +134,17 @@
       const number = input.value;
       const resultContainer = document.getElementById("result-container");
       const lottoNodataBox = resultContainer.querySelector(".lotto-nodata-box");
-      const newNumber = document.createElement("div");
+      const newNumber = document.createElement("button");
       newNumber.className = "lotto-number";
       newNumber.textContent = number;
 
       if (lottoNodataBox) {
         lottoNodataBox.remove();
+      }
+      if (newNumber) {
+        newNumber.addEventListener("click", function () {
+          newNumber.remove();
+        });
       }
 
       if (number >= 1 && number <= 45 && resultContainer.children.length < 7) {
@@ -196,12 +201,12 @@
           });
         });
       } else {
-        const existingResultText = document.getElementById("result-text");
+        const existingResultText = document.querySelector("result-text-box");
         if (existingResultText) {
           existingResultText.remove();
         }
         const resultText = document.createElement("p");
-        resultText.id = "result-text";
+        resultText.classList = "result-text-box red";
         resultText.textContent = "아쉽지만 당첨되지 않았습니다.";
         document.querySelector(".input-container").appendChild(resultText);
       }

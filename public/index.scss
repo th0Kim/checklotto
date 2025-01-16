@@ -156,7 +156,11 @@ button {
   font-size: 1.2em;
   color: #555555;
 }
+.result-text-box,
 .noice-text-box {
   font-size: 1.2em;
   color: #555555;
+  &.red {
+    color: #ff0000;
+  }
 }
