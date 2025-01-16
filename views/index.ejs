@@ -14,49 +14,51 @@
     <% } %>
   </head>
   <body>
-    <div class="input-container">
-      <h2 class="round-title">
-        회차 번호: <span id="round-number">비교할 회차를 검색하세요</span>
-      </h2>
-      <div class="input-group">
-        <input
-          type="number"
-          id="round-input"
-          min="1"
-          max="50000"
-          placeholder="회차 입력"
-        />
-        <button onclick="addRoundNumber()">회차 검색하기</button>
-      </div>
-      <div id="original-container" class="lotto-container">
-        <span class="lotto-nodata-box">조회된 로또 번호가 없습니다.</span>
-      </div>
-    </div>
-
-    <div class="input-container">
-      <label class="round-title" for="lotto-input">내 로또 번호</label>
-      <div class="input-group">
-        <input
-          type="number"
-          id="lotto-input"
-          min="1"
-          max="45"
-          placeholder="숫자 입력"
-        />
-        <button onclick="addLottoNumber()">숫자 추가하기</button>
+    <main>
+      <div class="input-container">
+        <h2 class="round-title">
+          회차 번호: <span id="round-number">비교할 회차를 검색하세요</span>
+        </h2>
+        <div class="input-group">
+          <input
+            type="number"
+            id="round-input"
+            min="1"
+            max="50000"
+            placeholder="회차 입력"
+          />
+          <button onclick="addRoundNumber()">회차 검색하기</button>
+        </div>
+        <div id="original-container" class="lotto-container">
+          <span class="lotto-nodata-box">조회된 로또 번호가 없습니다.</span>
+        </div>
       </div>
 
-      <div id="result-container" class="lotto-container">
-        <span class="lotto-nodata-box">내 로또 번호가 없습니다.</span>
-      </div>
-      <p class="noice-text-box">
-        • 중복 입력한 숫자가 있는 경우 정상적인 조회가 되지 않습니다.
-      </p>
+      <div class="input-container">
+        <label class="round-title" for="lotto-input">내 로또 번호</label>
+        <div class="input-group">
+          <input
+            type="number"
+            id="lotto-input"
+            min="1"
+            max="45"
+            placeholder="숫자 입력"
+          />
+          <button onclick="addLottoNumber()">숫자 추가하기</button>
+        </div>
 
-      <div class="input-bottom">
-        <button onclick="compareLottoNumber()">회차 비교하기</button>
+        <div id="result-container" class="lotto-container">
+          <span class="lotto-nodata-box">내 로또 번호가 없습니다.</span>
+        </div>
+        <p class="noice-text-box">
+          • 중복 입력한 숫자가 있는 경우 정상적인 조회가 되지 않습니다.
+        </p>
+
+        <div class="input-bottom">
+          <button onclick="compareLottoNumber()">회차 비교하기</button>
+        </div>
       </div>
-    </div>
+    </main>
   </body>
 
   <script>
