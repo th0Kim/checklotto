@@ -1,12 +1,14 @@
 <!-- views/index.ejs -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>로또</title>
-    <link rel="stylesheet" href="/public/css/index.css" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/index.css" />
+    <% if (process.env.NODE_ENV !== "production") { %>
     <script src="http://localhost:35729/livereload.js"></script>
+    <% } %>
   </head>
   <body>
     <div class="input-container">
@@ -19,7 +21,7 @@
           id="round-input"
           min="1"
           max="50000"
-          placeholder="Enter a round number"
+          placeholder="회차 입력"
         />
         <button onclick="addRoundNumber()">회차 검색하기</button>
       </div>
@@ -36,7 +38,7 @@
           id="lotto-input"
           min="1"
           max="45"
-          placeholder="Enter a number"
+          placeholder="숫자 입력"
         />
         <button onclick="addLottoNumber()">숫자 추가하기</button>
       </div>
@@ -53,6 +55,31 @@
   </body>
 
   <script>
+    // DOM 로드 후 실행
+    document.addEventListener("DOMContentLoaded", function () {
+      const roundInput = document.getElementById("round-input");
+      const lottoInput = document.getElementById("lotto-input");
+
+      if (roundInput) {
+        roundInput.focus();
+        enterInput("round-input", addRoundNumber);
+      }
+      if (lottoInput) {
+        enterInput("lotto-input", addLottoNumber);
+      }
+    });
+
+    // Enter key 입력 시 함수 호출
+    function enterInput(input, functionToCall = () => {}) {
+      document
+        .getElementById(input)
+        .addEventListener("keyup", function (event) {
+          if (event.key === "Enter") {
+            functionToCall();
+          }
+        });
+    }
+
     // 최신 로또 번호 불러오기
     function setLottoNumber(number) {
       const originalContainer = document.getElementById("original-container");
@@ -70,13 +97,26 @@
             data.drwtNo6,
             data.bnusNo,
           ];
-
+          // 로또 번호 추가
           numbers.forEach((num) => {
             const newNumber = document.createElement("div");
             newNumber.className = "lotto-number";
             newNumber.textContent = num;
             originalContainer.appendChild(newNumber);
           });
+
+          // 내 로또 번호 색상 초기화
+          const getNumbers =
+            document.getElementById("result-container").children;
+          Array.from(getNumbers).forEach((element) => {
+            element.classList.remove("red");
+          });
+
+          // 당첨 결과 문구 삭제
+          const existingResultText = document.getElementById("result-text");
+          if (existingResultText) {
+            existingResultText.remove();
+          }
         })
         .catch((error) => {
           console.error("Error fetching lotto numbers:", error);
